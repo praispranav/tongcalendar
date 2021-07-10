@@ -6,6 +6,7 @@ import { colors } from "../styles/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { allDay, dayClick } from "../actionCreator";
 import { Months } from "../data/months";
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 export default function Calendar(props) {
   // state array for displaying date.
@@ -150,10 +151,92 @@ export default function Calendar(props) {
       dayClick({ day: event, month: monthSelector, year: yearSelector })
     );
   };
+  const handleYearNext = () => {
+    setyearSelector(yearSelector + 1);
+  };
+  const handleYearBack = () => {
+    setyearSelector(yearSelector - 1);
+  };
   return (
     <>
       {pageinit ? (
         <>
+          {/* Year */}
+          <View style={[styles.flexColumn, styles.alignCenter, styles.marginTop]}>
+            <View style={styles.flex}>
+              <Button onPress={() => handleYearBack()}>
+                <AntDesign name="arrowleft" size={20} />
+              </Button>
+              <Text>{yearSelector}</Text>
+              <Button onPress={() => handleYearNext()}>
+                <AntDesign name="arrowright" size={20} />
+              </Button>
+            </View>
+          </View>
+          {/* months */}
+          <View
+            style={[
+              styles.flex,
+              styles.space_between,
+              styles.paddingHorizontal,
+              styles.marginTop,
+            ]}
+          >
+            {Months.slice(0, 6).map((item) => (
+              <Button key={item.id} onPress={() => handleMonth(item.id)}>
+                <View
+                  style={[
+                    styles.borderRounded,
+                    monthSelector === item.id ? styles.bgpink2 : styles.bgGrey,
+                    styles.paddingHorizontal,
+                    styles.paddingVerticalSmall,
+                  ]}
+                >
+                  <Text
+                    style={
+                      monthSelector === item.id
+                        ? styles.textWhite
+                        : styles.textBlack
+                    }
+                  >
+                    {item.label}
+                  </Text>
+                </View>
+              </Button>
+            ))}
+          </View>
+          <View
+            style={[
+              styles.flex,
+              styles.space_between,
+              styles.paddingHorizontal,
+              styles.marginTop,
+            ]}
+          >
+            {Months.slice(6, 12).map((item) => (
+              <Button key={item.id} onPress={() => handleMonth(item.id)}>
+                <View
+                  style={[
+                    styles.borderRounded,
+                    monthSelector === item.id ? styles.bgpink2 : styles.bgGrey,
+                    styles.paddingHorizontal,
+                    styles.paddingVerticalSmall,
+                  ]}
+                >
+                  <Text
+                    style={
+                      monthSelector === item.id
+                        ? styles.textWhite
+                        : styles.textBlack
+                    }
+                  >
+                    {item.label}
+                  </Text>
+                </View>
+              </Button>
+            ))}
+          </View>
+
           <View style={[styles.flex]}>
             {dayName.map((i) => (
               <>
@@ -175,7 +258,11 @@ export default function Calendar(props) {
                       return (
                         <Button
                           key={item.date}
-                          onPress={() => item.date === 'Null' ? console.log("No events") : handleDateClick(item.date)}
+                          onPress={() =>
+                            item.date === "Null"
+                              ? console.log("No events")
+                              : handleDateClick(item.date)
+                          }
                         >
                           <View
                             style={[
@@ -196,7 +283,7 @@ export default function Calendar(props) {
                             <View
                               style={[
                                 colors.eventColorDate,
-                                { width: Visiblity(item.event)},
+                                { width: Visiblity(item.event) },
                               ]}
                             ></View>
                           </View>
